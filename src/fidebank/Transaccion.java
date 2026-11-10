@@ -3,6 +3,8 @@ package fidebank;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class Transaccion {
 
@@ -21,6 +23,7 @@ public class Transaccion {
         this.numeroCuenta = numeroCuenta;
 
         LocalDateTime ahora = LocalDateTime.now();
+
         DateTimeFormatter formato =
                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -29,13 +32,20 @@ public class Transaccion {
 
     public String generarComprobante() {
 
+        NumberFormat formatoMonto =
+                NumberFormat.getNumberInstance(
+                        new Locale("es", "CR"));
+
+        formatoMonto.setMinimumFractionDigits(2);
+        formatoMonto.setMaximumFractionDigits(2);
+
         return "FideBank - Comprobante"
                 + "\n---------------------------"
                 + "\nTransacción: " + idTransaccion
                 + "\nFecha: " + fecha
                 + "\nTipo: " + tipo
                 + "\nCuenta: " + numeroCuenta
-                + "\nMonto: " + monto
+                + "\nMonto: ₡" + formatoMonto.format(monto)
                 + "\nEstado: Completada";
     }
 }
